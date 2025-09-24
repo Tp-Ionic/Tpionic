@@ -16,7 +16,7 @@ public class Rapport_scolaire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String annee_colaire;
+    private String annee_scolaire;
     private String urlBulletin;
     private String urlPhotoactivite;
     private String urlPresence;
