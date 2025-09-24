@@ -22,10 +22,8 @@ public class Enfant {
     private String prenom;
     private String dateNaissance;
     private String adresse;
-    private String email;
-    private String password;
     private int age;
-    private String aprpos_de_engants;
+    private String aprpos_de_enfants;
 
     // Relation Many-to-One vers Association
     @ManyToOne
