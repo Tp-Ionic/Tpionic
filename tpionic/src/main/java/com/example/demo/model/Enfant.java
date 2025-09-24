@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +27,11 @@ public class Enfant {
     private int age;
     private String aprpos_de_engants;
 
+    // Relation Many-to-One vers Association
+    @ManyToOne
+    @JoinColumn(name = "association_id")
+    private Association association;
+
     @OneToMany(mappedBy = "enfant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Parrainage> parrainages = new ArrayList<>();
 
@@ -36,4 +40,7 @@ public class Enfant {
 
     @OneToMany(mappedBy = "enfant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Frais_scolaire> fraisScolaires = new ArrayList<>();
+
+    @OneToMany(mappedBy = "enfant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<paiement> paiements = new ArrayList<>();
 }
