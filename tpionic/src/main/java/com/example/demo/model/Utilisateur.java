@@ -21,4 +21,6 @@ public abstract class Utilisateur {
 
     @Column(name = "actif")
     private Boolean actif = true;
+
+
 }

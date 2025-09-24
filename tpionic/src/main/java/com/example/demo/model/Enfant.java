@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Enfant {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,6 +25,11 @@ public class Enfant {
     private String adresse;
     private int age;
     private String aprpos_de_enfants;
+
+    // Relation Many-to-One vers Parent
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Parent parent;
 
     // Relation Many-to-One vers Association
     @ManyToOne
