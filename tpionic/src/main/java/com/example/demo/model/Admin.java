@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Admin {
+public class Admin extends Utilisateur{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

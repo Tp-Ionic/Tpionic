@@ -1,12 +1,18 @@
 package com.example.demo.model;
 
+import com.example.demo.Enumeration.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class Utilisateur {
 
     @Id
@@ -21,4 +27,6 @@ public abstract class Utilisateur {
 
     @Column(name = "actif")
     private Boolean actif = true;
+    @Enumerated(EnumType.STRING)
+    private Role Role;
 }
