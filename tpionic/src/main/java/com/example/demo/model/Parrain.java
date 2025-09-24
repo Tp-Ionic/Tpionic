@@ -1,28 +1,23 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Parrain {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@Table(name = "parrains")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+public class Parrain extends Utilisateur {
 
     private String nom;
     private String prenom;
-    private String email;
 
-    @OneToMany(mappedBy = "parrain", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Parrainage> parrainages = new ArrayList<>();
+    private String telephone;
+    private String pays;
+    private String ville;
+    private String avatarUrl;
 }
