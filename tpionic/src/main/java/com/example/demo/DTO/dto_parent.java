@@ -9,15 +9,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class dto_enfant {
+public class dto_parent {
     private int id;
     private String nom;
     private String prenom;
-    private String dateNaissance;
+    private String telephone;
     private String adresse;
-    private String email;
-    private String password;
-    private int age;
-    private String aprpos_de_engants;
-    private Integer associationId;
+    private String email;        // Hérité de Utilisateur
+    private String motDePasse;   // Hérité de Utilisateur
+    private Boolean actif;       // Hérité de Utilisateur
 }

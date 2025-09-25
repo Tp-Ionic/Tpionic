@@ -13,7 +13,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Enfant {
+public class Enfant extends Utilisateur {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,10 +23,13 @@ public class Enfant {
     private String prenom;
     private String dateNaissance;
     private String adresse;
-    private String email;
-    private String password;
     private int age;
-    private String aprpos_de_engants;
+    private String aprpos_de_enfants;
+
+    // Relation Many-to-One vers Parent
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Parent parent;
 
     // Relation Many-to-One vers Association
     @ManyToOne

@@ -65,4 +65,6 @@ public class dto_parrain {
         if (u.avatarUrl != null) p.setAvatarUrl(u.avatarUrl);
         if (u.actif != null) p.setActif(u.actif);
     }
+
+
 }
