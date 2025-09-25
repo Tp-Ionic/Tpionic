@@ -22,9 +22,7 @@ public class Rapport_scolaire {
     private String urlPresence;
     private String date;
 
-
     @ManyToOne
     @JoinColumn(name = "enfant_id", nullable = false)
     private Enfant enfant;
 }
-

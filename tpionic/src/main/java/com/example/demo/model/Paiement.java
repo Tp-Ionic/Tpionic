@@ -1,26 +1,26 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Frais_scolaire {
+public class Paiement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String classe;
-    private String annee_scolaire;
+    private String libelle;
+    private String typePaiement;
+    private LocalDate datePaiement;
     private int montant;
+    private boolean confirme = false;
+    private LocalDate dateConfirmation;
 
     @ManyToOne
-    @JoinColumn(name = "enfant_id", nullable = false)
+    @JoinColumn(name = "enfant_id")
     private Enfant enfant;
 }

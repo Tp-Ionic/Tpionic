@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,17 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "parents")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "parents")
 public class Parent extends Utilisateur {
 
+    private String nom;
+    private String prenom;
     private String telephone;
     private String adresse;
 
-    // Relation avec les enfants
+    @JsonIgnore
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Enfant> enfants = new ArrayList<>();
 }

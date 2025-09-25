@@ -1,11 +1,16 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.dto_parents;
 import com.example.demo.model.Enfant;
 import com.example.demo.model.Rapport_scolaire;
 import com.example.demo.model.Frais_scolaire;
-import com.example.demo.model.paiement;
+import com.example.demo.model.Paiement;
 import com.example.demo.model.Parent;
-import com.example.demo.repository.*;
+import com.example.demo.repository.EnfantRepository;
+import com.example.demo.repository.RapportScolaireRepository;
+import com.example.demo.repository.FraisScolaireRepository;
+import com.example.demo.repository.PaiementRepository;
+import com.example.demo.repository.ParentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,31 +19,25 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class service_parent {
+public class service_parents {
 
-    private final ParentsRepository parentsRepository;
+    private final ParentRepository parentRepository;
     private final EnfantRepository enfantRepository;
     private final RapportScolaireRepository rapportScolaireRepository;
     private final FraisScolaireRepository fraisScolaireRepository;
     private final PaiementRepository paiementRepository;
 
-    // Vérifier que l'enfant appartient bien au parent
     private boolean verifierParentEnfant(int enfantId, int parentId) {
         Optional<Enfant> enfantOpt = enfantRepository.findById(enfantId);
-
-        if (enfantOpt.isPresent()) {
-            Enfant enfant = enfantOpt.get();
-            return enfant.getParent() != null && enfant.getParent().getId() == parentId;
-        }
-        return false;
+        return enfantOpt.isPresent() &&
+                enfantOpt.get().getParent() != null &&
+                enfantOpt.get().getParent().getId() == parentId;
     }
 
-    // Voir la liste de mes enfants
     public List<Enfant> getMesEnfants(int parentId) {
         return enfantRepository.findByParentId(parentId);
     }
 
-    // Voir les informations d'un de mes enfants
     public Enfant getMonEnfant(int enfantId, int parentId) {
         if (verifierParentEnfant(enfantId, parentId)) {
             return enfantRepository.findById(enfantId).orElse(null);
@@ -46,7 +45,6 @@ public class service_parent {
         return null;
     }
 
-    // Voir les rapports scolaires de mon enfant
     public List<Rapport_scolaire> getRapportsScolairesEnfant(int enfantId, int parentId) {
         if (verifierParentEnfant(enfantId, parentId)) {
             return rapportScolaireRepository.findByEnfantId(enfantId);
@@ -54,7 +52,6 @@ public class service_parent {
         return List.of();
     }
 
-    // Voir les frais scolaires de mon enfant
     public List<Frais_scolaire> getFraisScolairesEnfant(int enfantId, int parentId) {
         if (verifierParentEnfant(enfantId, parentId)) {
             return fraisScolaireRepository.findByEnfantId(enfantId);
@@ -62,12 +59,11 @@ public class service_parent {
         return List.of();
     }
 
-    // Confirmer un paiement aux parrains
     public boolean confirmerPaiementParrain(int fraisId, int enfantId, int parentId) {
         if (verifierParentEnfant(enfantId, parentId)) {
-            Optional<paiement> paiementOpt = paiementRepository.findById(fraisId);
+            Optional<Paiement> paiementOpt = paiementRepository.findById(fraisId);
             if (paiementOpt.isPresent()) {
-                paiement paiement = paiementOpt.get();
+                Paiement paiement = paiementOpt.get();
                 if (paiement.getEnfant().getId() == enfantId) {
                     paiement.setConfirme(true);
                     paiement.setDateConfirmation(java.time.LocalDate.now());
@@ -79,7 +75,6 @@ public class service_parent {
         return false;
     }
 
-    // Informer d'un changement de situation
     public boolean informerChangementSituation(int enfantId, int parentId, String nouvelleSituation) {
         if (verifierParentEnfant(enfantId, parentId)) {
             Optional<Enfant> enfantOpt = enfantRepository.findById(enfantId);
@@ -87,23 +82,30 @@ public class service_parent {
                 Enfant enfant = enfantOpt.get();
                 enfant.setAprpos_de_enfants(nouvelleSituation);
                 enfantRepository.save(enfant);
-
-                notifierEcoleChangementSituation(enfant, nouvelleSituation);
                 return true;
             }
         }
         return false;
     }
 
-    private void notifierEcoleChangementSituation(Enfant enfant, String nouvelleSituation) {
-        // Implémenter la logique de notification à l'école
-        System.out.println("Notification à l'école: Changement de situation pour " +
-                enfant.getPrenom() + " " + enfant.getNom() +
-                " : " + nouvelleSituation);
+    public Parent updateProfilParent(int parentId, dto_parents parentDTO) {
+        Optional<Parent> parentOpt = parentRepository.findById(parentId);
+        if (parentOpt.isPresent()) {
+            Parent parent = parentOpt.get();
+            parent.setNom(parentDTO.getNom());
+            parent.setPrenom(parentDTO.getPrenom());
+            parent.setTelephone(parentDTO.getTelephone());
+            parent.setAdresse(parentDTO.getAdresse());
+            parent.setEmail(parentDTO.getEmail());
+            if (parentDTO.getPassword() != null && !parentDTO.getPassword().isEmpty()) {
+                parent.setPassword(parentDTO.getPassword());
+            }
+            return parentRepository.save(parent);
+        }
+        return null;
     }
 
-    // Méthode pour que le parent puisse voir son propre profil (lecture seule)
     public Optional<Parent> getParentById(int parentId) {
-        return parentsRepository.findById(parentId);
+        return parentRepository.findById(parentId);
     }
 }

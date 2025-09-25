@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface EnfantRepository extends JpaRepository<Enfant, Integer> {
     List<Enfant> findByParentId(int parentId);
+    List<Enfant> findByAssociationId(int associationId);
 }

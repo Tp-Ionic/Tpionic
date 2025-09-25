@@ -24,7 +24,7 @@ public class Parrainage {
     @JoinColumn(name = "enfant_id")
     private Enfant enfant;
 
-
     private String dateDebut;
     private int montant_contribue;
+    private boolean actif = true;
 }
