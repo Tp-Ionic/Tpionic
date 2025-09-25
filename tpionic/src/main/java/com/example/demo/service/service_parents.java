@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.dto_enfants;
 import com.example.demo.DTO.dto_parents;
 import com.example.demo.model.Enfant;
 import com.example.demo.model.Rapport_scolaire;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +36,22 @@ public class service_parents {
                 enfantOpt.get().getParent().getId() == parentId;
     }
 
-    public List<Enfant> getMesEnfants(int parentId) {
-        return enfantRepository.findByParentId(parentId);
+    public List<dto_enfants> getMesEnfants(int parentId) {
+        List<Enfant> enfants = enfantRepository.findByParentId(parentId);
+
+        return enfants.stream()
+                .map(enfant -> new dto_enfants(
+                        enfant.getId(),
+                        enfant.getNom(),
+                        enfant.getPrenom(),
+                        enfant.getDateNaissance(),
+                        enfant.getAdresse(),
+                        enfant.getAge(),
+                        enfant.getAprpos_de_enfants(),
+                        enfant.getParent() != null ? enfant.getParent().getId() : null,
+                        enfant.getAssociation() != null ? enfant.getAssociation().getId() : null
+                ))
+                .collect(Collectors.toList());
     }
 
     public Enfant getMonEnfant(int enfantId, int parentId) {

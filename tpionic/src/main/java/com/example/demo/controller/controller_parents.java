@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.dto_enfants;
 import com.example.demo.DTO.dto_parents;
 import com.example.demo.model.Enfant;
 import com.example.demo.model.Parent;
@@ -20,8 +21,8 @@ public class controller_parents {
     private final service_parents parentsService;
 
     @GetMapping("/{parentId}/enfants")
-    public ResponseEntity<List<Enfant>> getMesEnfants(@PathVariable int parentId) {
-        List<Enfant> enfants = parentsService.getMesEnfants(parentId);
+    public ResponseEntity<List<dto_enfants>> getMesEnfants(@PathVariable int parentId) {
+        List<dto_enfants> enfants = parentsService.getMesEnfants(parentId);
         return ResponseEntity.ok(enfants);
     }
 

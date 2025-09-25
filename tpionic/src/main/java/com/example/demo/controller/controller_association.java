@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.dto_enfants;
 import com.example.demo.model.*;
 import com.example.demo.model.Association.AssociationStatus;
 import com.example.demo.DTO.dto_association;
@@ -122,8 +123,14 @@ public class controller_association {
 
     @PostMapping("/enfants/{enfantId}/rapports-scolaires")
     public ResponseEntity<Rapport_scolaire> genererRapportScolaire(
-            @PathVariable int enfantId, @RequestParam String anneeScolaire, @RequestParam String bulletinUrl) {
-        Rapport_scolaire rapport = associationService.genererRapportScolaire(enfantId, anneeScolaire, bulletinUrl);
+            @PathVariable int enfantId,
+            @RequestParam String anneeScolaire,
+            @RequestParam String bulletinUrl,
+            @RequestParam(required = false) String urlPhotoactivite,
+            @RequestParam(required = false) String urlPresence) {
+
+        Rapport_scolaire rapport = associationService.genererRapportScolaire(
+                enfantId, anneeScolaire, bulletinUrl, urlPhotoactivite, urlPresence);
         if (rapport != null) return ResponseEntity.ok(rapport);
         return ResponseEntity.badRequest().build();
     }
@@ -155,5 +162,14 @@ public class controller_association {
         Parent parent = associationService.updateProfilParent(parentId, parentDTO);
         if (parent != null) return ResponseEntity.ok(parent);
         return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/enfants")
+    public ResponseEntity<Enfant> creerEnfant(@RequestBody dto_enfants enfantDTO) {
+        try {
+            Enfant enfant = associationService.creerEnfant(enfantDTO);
+            return ResponseEntity.ok(enfant);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.dto_enfants;
 import com.example.demo.model.*;
 import com.example.demo.model.Association.AssociationStatus;
 import com.example.demo.DTO.dto_association;
@@ -79,7 +80,7 @@ public class service_association {
         return associationRepository.findByStatus(AssociationStatus.REJETEE);
     }
 
-    // Méthodes existantes (inchangées)
+
     public Parent creerParent(dto_parents parentDTO) {
         Parent parent = new Parent();
         parent.setNom(parentDTO.getNom());
@@ -152,14 +153,18 @@ public class service_association {
         return depenseRepository.save(depense);
     }
 
-    public Rapport_scolaire genererRapportScolaire(int enfantId, String anneeScolaire, String bulletinUrl) {
+    public Rapport_scolaire genererRapportScolaire(int enfantId, String anneeScolaire, String bulletinUrl,
+                                                   String urlPhotoactivite, String urlPresence) {
         Optional<Enfant> enfantOpt = enfantRepository.findById(enfantId);
         if (enfantOpt.isPresent()) {
             Rapport_scolaire rapport = new Rapport_scolaire();
             rapport.setEnfant(enfantOpt.get());
             rapport.setAnnee_scolaire(anneeScolaire);
             rapport.setUrlBulletin(bulletinUrl);
+            rapport.setUrlPhotoactivite(urlPhotoactivite);
+            rapport.setUrlPresence(urlPresence);
             rapport.setDate(java.time.LocalDate.now().toString());
+
             return rapportScolaireRepository.save(rapport);
         }
         return null;
@@ -218,5 +223,34 @@ public class service_association {
             return parentRepository.save(parent);
         }
         return null;
+    }
+    public Enfant creerEnfant(dto_enfants enfantDTO) {
+        Enfant enfant = new Enfant();
+        enfant.setNom(enfantDTO.getNom());
+        enfant.setPrenom(enfantDTO.getPrenom());
+        enfant.setDateNaissance(enfantDTO.getDateNaissance());
+        enfant.setAdresse(enfantDTO.getAdresse());
+        enfant.setAge(enfantDTO.getAge());
+        enfant.setAprpos_de_enfants(enfantDTO.getAprpos_de_enfants());
+
+        // Lier l'enfant au parent
+        if (enfantDTO.getParentId() != null) {
+            Optional<Parent> parentOpt = parentRepository.findById(enfantDTO.getParentId());
+            if (parentOpt.isPresent()) {
+                enfant.setParent(parentOpt.get());
+            } else {
+                throw new RuntimeException("Parent non trouvé avec l'ID: " + enfantDTO.getParentId());
+            }
+        }
+
+        // Lier l'enfant à l'association (optionnel)
+        if (enfantDTO.getAssociationId() != null) {
+            Optional<Association> associationOpt = associationRepository.findById(enfantDTO.getAssociationId());
+            if (associationOpt.isPresent()) {
+                enfant.setAssociation(associationOpt.get());
+            }
+        }
+
+        return enfantRepository.save(enfant);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Rapport_scolaire {
     private String date;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "enfant_id", nullable = false)
     private Enfant enfant;
 }
