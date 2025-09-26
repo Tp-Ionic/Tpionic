@@ -15,7 +15,6 @@ public class Parrain extends Utilisateur {
 
     private String nom;
     private String prenom;
-
     private String telephone;
     private String pays;
     private String ville;

@@ -1,6 +1,10 @@
-package com.example.demo.dto;
+package com.example.demo.DTO;
 
 import com.example.demo.model.Parrain;
+import com.example.demo.DTO.dto_rapport_scolaire;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class dto_parrain {
 
@@ -37,6 +41,22 @@ public class dto_parrain {
         public String ville;
         public String avatarUrl;
         public Boolean actif;      // hérité
+    }
+
+    // DTO pour le résumé complet d'un enfant parrainé
+    public static class ResumeEnfantResponse {
+        public Long enfantId;
+        public String enfantNom;
+        public int age;
+        public String classe;
+        public String associationNom;
+        public String statutParrainage;
+        public Double montantMensuel;
+        public LocalDate dateDebut;
+        public List<String> bulletinsPdfUrls;
+        public List<String> photosActivitesUrls;
+        public List<String> listesPresenceUrls;
+        public List<dto_rapport_scolaire.Response> rapportsScolairesRecents;
     }
 
     public static Response of(Parrain p){
