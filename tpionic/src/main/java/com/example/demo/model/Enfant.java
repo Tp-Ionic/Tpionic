@@ -10,32 +10,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "enfants")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Enfant extends Utilisateur {
-
+public class Enfant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String nom;
-    private String prenom;
-    private String dateNaissance;
-    private String adresse;
-    private int age;
-    private String aprpos_de_enfants;
 
-    // Relation Many-to-One vers Parent
-    @ManyToOne
+    @Column(nullable = false)
+    private String prenom;
+
+    @Column(nullable = false)
+    private String dateNaissance;
+
+    @Column(nullable = false)
+    private String adresse;
+
+    private int age;
+    private String apropos_de_enfant;
+
+    // Champs pour les fichiers
+    @Column(columnDefinition = "TEXT")
+    private String bulletinsPdfUrls; // URLs des bulletins PDF séparés par virgule
+
+    @Column(columnDefinition = "TEXT")
+    private String photosActivitesUrls; // URLs des photos d'activités séparés par virgule
+
+    @Column(columnDefinition = "TEXT")
+    private String listesPresenceUrls; // URLs des listes de présence séparés par virgule
+
+    // Relation avec l'association
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "association_id", nullable = false)
+    private Association association;
+
+    // Relation avec le parent
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Parent parent;
-
-    // Relation Many-to-One vers Association
-    @ManyToOne
-    @JoinColumn(name = "association_id")
-    private Association association;
 
     @OneToMany(mappedBy = "enfant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Parrainage> parrainages = new ArrayList<>();
@@ -47,5 +65,5 @@ public class Enfant extends Utilisateur {
     private List<Frais_scolaire> fraisScolaires = new ArrayList<>();
 
     @OneToMany(mappedBy = "enfant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<paiement> paiements = new ArrayList<>();
+    private List<Deplacement> deplacements = new ArrayList<>();
 }

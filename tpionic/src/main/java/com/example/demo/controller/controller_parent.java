@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Enfant;
-import com.example.demo.model.Frais_scolaire;
-import com.example.demo.model.Parent;
-import com.example.demo.model.Rapport_scolaire;
+import com.example.demo.DTO.dto_parent;
 import com.example.demo.service.service_parent;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,79 +12,106 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/parents")
-@RequiredArgsConstructor
 public class controller_parent {
 
-    private final service_parent parentsService;
+    @Autowired
+    private service_parent parentService;
 
-    // Voir mon profil (lecture seule)
-    @GetMapping("/{parentId}/profil")
-    public ResponseEntity<Parent> getMonProfil(@PathVariable int parentId) {
-        Optional<Parent> parent = parentsService.getParentById(parentId);
-        return parent.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Voir la liste de mes enfants
-    @GetMapping("/{parentId}/enfants")
-    public ResponseEntity<List<Enfant>> getMesEnfants(@PathVariable int parentId) {
-        List<Enfant> enfants = parentsService.getMesEnfants(parentId);
-        return ResponseEntity.ok(enfants);
-    }
-
-    // Voir les informations d'un de mes enfants
-    @GetMapping("/{parentId}/enfants/{enfantId}")
-    public ResponseEntity<Enfant> getMonEnfant(
-            @PathVariable int parentId,
-            @PathVariable int enfantId) {
-        Enfant enfant = parentsService.getMonEnfant(enfantId, parentId);
-        if (enfant != null) {
-            return ResponseEntity.ok(enfant);
+    // Créer un compte parent
+    @PostMapping
+    public ResponseEntity<dto_parent.Response> createParent(@RequestBody dto_parent.CreateRequest request) {
+        try {
+            dto_parent.Response response = parentService.createParent(request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
-    // Voir les rapports scolaires de mon enfant
-    @GetMapping("/{parentId}/enfants/{enfantId}/rapports-scolaires")
-    public ResponseEntity<List<Rapport_scolaire>> getRapportsScolairesEnfant(
-            @PathVariable int parentId,
-            @PathVariable int enfantId) {
-        List<Rapport_scolaire> rapports = parentsService.getRapportsScolairesEnfant(enfantId, parentId);
-        return ResponseEntity.ok(rapports);
+    // Obtenir tous les parents
+    @GetMapping
+    public ResponseEntity<List<dto_parent.Response>> getAllParents() {
+        List<dto_parent.Response> responses = parentService.getAllParents();
+        return ResponseEntity.ok(responses);
     }
 
-    // Voir l'état des paiements de mon enfant
-    @GetMapping("/{parentId}/enfants/{enfantId}/frais-scolaires")
-    public ResponseEntity<List<Frais_scolaire>> getFraisScolairesEnfant(
-            @PathVariable int parentId,
-            @PathVariable int enfantId) {
-        List<Frais_scolaire> frais = parentsService.getFraisScolairesEnfant(enfantId, parentId);
-        return ResponseEntity.ok(frais);
+    // Obtenir un parent par ID
+    @GetMapping("/{id}")
+    public ResponseEntity<dto_parent.Response> getParentById(@PathVariable int id) {
+        Optional<dto_parent.Response> response = parentService.getParentById(id);
+        return response.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    // Confirmer un paiement aux parrains
-    @PutMapping("/{parentId}/enfants/{enfantId}/frais/{fraisId}/confirmer-paiement")
-    public ResponseEntity<String> confirmerPaiementParrain(
-            @PathVariable int parentId,
-            @PathVariable int enfantId,
-            @PathVariable int fraisId) {
-        boolean confirme = parentsService.confirmerPaiementParrain(fraisId, enfantId, parentId);
-        if (confirme) {
-            return ResponseEntity.ok("Paiement confirmé aux parrains avec succès");
+    // Obtenir un parent par email
+    @GetMapping("/email/{email}")
+    public ResponseEntity<dto_parent.Response> getParentByEmail(@PathVariable String email) {
+        Optional<dto_parent.Response> response = parentService.getParentByEmail(email);
+        return response.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Authentification supprimée - sera gérée par Spring Security
+
+    // Modifier un parent
+    @PutMapping("/{id}")
+    public ResponseEntity<dto_parent.Response> updateParent(@PathVariable int id, @RequestBody dto_parent.UpdateProfilRequest request) {
+        try {
+            dto_parent.Response response = parentService.updateParent(id, request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.badRequest().body("Frais non trouvé ou non autorisé");
     }
 
-    // Informer d'un changement de situation
-    @PostMapping("/{parentId}/enfants/{enfantId}/changement-situation")
-    public ResponseEntity<String> informerChangementSituation(
-            @PathVariable int parentId,
-            @PathVariable int enfantId,
-            @RequestBody String nouvelleSituation) {
-        boolean informe = parentsService.informerChangementSituation(enfantId, parentId, nouvelleSituation);
-        if (informe) {
-            return ResponseEntity.ok("Changement de situation signalé à l'école");
+    // Supprimer un parent
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteParent(@PathVariable int id) {
+        try {
+            parentService.deleteParent(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.badRequest().body("Enfant non trouvé ou non autorisé");
+    }
+
+    // Rechercher des parents par nom
+    @GetMapping("/search/nom/{nom}")
+    public ResponseEntity<List<dto_parent.Response>> searchParentsByName(@PathVariable String nom) {
+        List<dto_parent.Response> responses = parentService.searchParentsByName(nom);
+        return ResponseEntity.ok(responses);
+    }
+
+    // Rechercher des parents par prénom
+    @GetMapping("/search/prenom/{prenom}")
+    public ResponseEntity<List<dto_parent.Response>> searchParentsByPrenom(@PathVariable String prenom) {
+        List<dto_parent.Response> responses = parentService.searchParentsByPrenom(prenom);
+        return ResponseEntity.ok(responses);
+    }
+
+    // Rechercher des parents par pays
+    @GetMapping("/search/pays/{pays}")
+    public ResponseEntity<List<dto_parent.Response>> searchParentsByPays(@PathVariable String pays) {
+        List<dto_parent.Response> responses = parentService.searchParentsByPays(pays);
+        return ResponseEntity.ok(responses);
+    }
+
+    // Rechercher des parents par ville
+    @GetMapping("/search/ville/{ville}")
+    public ResponseEntity<List<dto_parent.Response>> searchParentsByVille(@PathVariable String ville) {
+        List<dto_parent.Response> responses = parentService.searchParentsByVille(ville);
+        return ResponseEntity.ok(responses);
+    }
+
+    // Rechercher des parents par profession
+    @GetMapping("/search/profession/{profession}")
+    public ResponseEntity<List<dto_parent.Response>> searchParentsByProfession(@PathVariable String profession) {
+        List<dto_parent.Response> responses = parentService.searchParentsByProfession(profession);
+        return ResponseEntity.ok(responses);
+    }
+
+    // Rechercher des parents par relation avec l'enfant
+    @GetMapping("/search/relation/{relationAvecEnfant}")
+    public ResponseEntity<List<dto_parent.Response>> searchParentsByRelation(@PathVariable String relationAvecEnfant) {
+        List<dto_parent.Response> responses = parentService.searchParentsByRelation(relationAvecEnfant);
+        return ResponseEntity.ok(responses);
     }
 }

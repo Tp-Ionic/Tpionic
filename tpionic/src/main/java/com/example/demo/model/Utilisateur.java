@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.DTO.DtoUtilisateur;
 import com.example.demo.Enumeration.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,4 +30,8 @@ public abstract class Utilisateur {
     private Boolean actif = true;
     @Enumerated(EnumType.STRING)
     private Role Role;
+
+    public DtoUtilisateur dtoUtilisateur(Utilisateur user){
+        return new DtoUtilisateur(user.email, user.Role, user.actif);
+    }
 }

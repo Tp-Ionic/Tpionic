@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/authentification")
+@RequestMapping("/api")
 public class ControllerAuthentificatification {
     private final AuthentificationService authentificationService;
 

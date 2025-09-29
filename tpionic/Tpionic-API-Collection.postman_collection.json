@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "tpionic-api-collection",
+		"name": "Tpionic API - Collection Complète",
+		"description": "Collection complète pour tester l'API Tpionic - Gestion de Parrainage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🏢 Associations",
+			"item": [
+				{
+					"name": "Créer Association",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nom\": \"Association Solidarité Enfants\",\n    \"email\": \"contact@solidarite-enfants.org\",\n    \"motDePasse\": \"motdepasse123\",\n    \"telephone\": \"+221 33 123 45 67\",\n    \"adresse\": \"123 Avenue de la Liberté\",\n    \"pays\": \"Sénégal\",\n    \"ville\": \"Dakar\",\n    \"description\": \"Association dédiée à l'éducation des enfants défavorisés\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/associations",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations"]
+						}
+					}
+				},
+				{
+					"name": "Connexion Association",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "contact@solidarite-enfants.org",
+									"type": "text"
+								},
+								{
+									"key": "motDePasse",
+									"value": "motdepasse123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/associations/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations", "login"]
+						}
+					}
+				},
+				{
+					"name": "Lister Associations",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/associations",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👨‍👩‍👧‍👦 Parrains",
+			"item": [
+				{
+					"name": "Créer Parrain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nom\": \"Dupont\",\n    \"prenom\": \"Jean\",\n    \"email\": \"jean.dupont@email.com\",\n    \"motDePasse\": \"parrain123\",\n    \"telephone\": \"+33 6 12 34 56 78\",\n    \"pays\": \"France\",\n    \"ville\": \"Paris\",\n    \"avatarUrl\": \"https://example.com/avatar.jpg\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/parrains",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "parrains"]
+						}
+					}
+				},
+				{
+					"name": "Connexion Parrain",
+					"request": {
+						"method": "POST",
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "jean.dupont@email.com",
+									"type": "text"
+								},
+								{
+									"key": "motDePasse",
+									"value": "parrain123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/parrains/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "parrains", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👶 Enfants",
+			"item": [
+				{
+					"name": "Ajouter Enfant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nom\": \"Diop\",\n    \"prenom\": \"Fatou\",\n    \"dateNaissance\": \"2010-05-15\",\n    \"adresse\": \"Quartier Parcelles Assainies\",\n    \"email\": \"fatou.diop@email.com\",\n    \"password\": \"enfant123\",\n    \"age\": 13,\n    \"apropos_de_enfant\": \"Fatou est une élève brillante qui aime les mathématiques\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/associations/1/enfants",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations", "1", "enfants"]
+						}
+					}
+				},
+				{
+					"name": "Lister Enfants par Association",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/associations/1/enfants",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations", "1", "enfants"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "💰 Paiements",
+			"item": [
+				{
+					"name": "Créer Paiement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"montant\": 50000.0,\n    \"typePaiement\": \"VIREMENT_BANCAIRE\",\n    \"datePaiement\": \"2024-01-15\",\n    \"reference\": \"VIR001234567\",\n    \"notes\": \"Paiement mensuel pour Fatou Diop\",\n    \"parrainId\": 1,\n    \"enfantId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/paiements",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "paiements"]
+						}
+					}
+				},
+				{
+					"name": "Lister Paiements",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "http://localhost:8080/api/paiements",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "paiements"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📁 Upload Fichiers",
+			"item": [
+				{
+					"name": "Upload Bulletin PDF",
+					"request": {
+						"method": "POST",
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/associations/1/enfants/1/upload-bulletin",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations", "1", "enfants", "1", "upload-bulletin"]
+						}
+					}
+				},
+				{
+					"name": "Upload Photo Activité",
+					"request": {
+						"method": "POST",
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/associations/1/enfants/1/upload-photo",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "associations", "1", "enfants", "1", "upload-photo"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

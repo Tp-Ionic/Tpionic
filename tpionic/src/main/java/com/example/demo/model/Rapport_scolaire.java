@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
+@Table(name = "rapports_scolaires")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,14 +19,13 @@ public class Rapport_scolaire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String trimestre;
     private String annee_scolaire;
-    private String urlBulletin;
-    private String urlPhotoactivite;
-    private String urlPresence;
-    private String date;
+    private Double moyenne;
+    private String appreciation;
+    private LocalDate dateRapport;
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enfant_id", nullable = false)
     private Enfant enfant;
 }

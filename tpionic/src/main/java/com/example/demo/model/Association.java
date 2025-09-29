@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,23 +10,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "associations")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Association extends Utilisateur {
+public class Association {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String nom;
-    private String adresse;
-    private String numero_autorisation;
 
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String motDePasse;
+
+    @Column(nullable = false)
+    private String telephone;
+
+    @Column(nullable = false)
+    private String adresse;
+
+    @Column(nullable = false)
+    private String pays;
+
+    @Column(nullable = false)
+    private String ville;
+
+    private String description;
+    private String logoUrl;
+    private Boolean actif = true;
+    @Column(nullable = false)
+    private String statut = "EN_ATTENTE";
 
     @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enfant> enfants = new ArrayList<>();
     @ManyToOne
-    @JoinColumn(nullable = false, name = "id_Administrateur")
+    @JoinColumn(name="admin_id")
     private Admin administrateur;
 }

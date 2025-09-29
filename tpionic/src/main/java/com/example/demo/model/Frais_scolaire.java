@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "frais_scolaire")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,14 +15,16 @@ import lombok.Setter;
 public class Frais_scolaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String classe;
     private String annee_scolaire;
-    private int montant;
+    private Double montant;
+    private String description;
+    private String statut;
+    private java.time.LocalDate dateEcheance;
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enfant_id", nullable = false)
     private Enfant enfant;
 }
