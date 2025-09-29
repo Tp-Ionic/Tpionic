@@ -19,27 +19,27 @@ public class controller_parrain {
     }
 
     @PostMapping
-    public dto_parrain.Response creer(@RequestBody CreateRequest req){
+    public dto_parrain.Response creer(@RequestBody CreateRequest req) {
         return service.creer(req);
     }
 
     @GetMapping
-    public List<dto_parrain.Response> list(){
+    public List<dto_parrain.Response> list() {
         return service.list();
     }
 
     @GetMapping("/{id}")
-    public dto_parrain.Response get(@PathVariable int id){
+    public dto_parrain.Response get(@PathVariable int id) {
         return service.get(id);
     }
 
     @PutMapping("/{id}")
-    public dto_parrain.Response update(@PathVariable int id, @RequestBody UpdateRequest req){
+    public dto_parrain.Response update(@PathVariable int id, @RequestBody UpdateRequest req) {
         return service.update(id, req);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable int id) {
         service.delete(id);
     }
 }

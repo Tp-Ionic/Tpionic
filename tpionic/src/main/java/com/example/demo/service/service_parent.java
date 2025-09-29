@@ -1,10 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Enfant;
-import com.example.demo.model.Rapport_scolaire;
-import com.example.demo.model.Frais_scolaire;
-import com.example.demo.model.paiement;
-import com.example.demo.model.Parent;
+import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

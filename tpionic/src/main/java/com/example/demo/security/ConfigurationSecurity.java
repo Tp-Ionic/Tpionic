@@ -18,7 +18,7 @@ public class ConfigurationSecurity {
     private final JwtAuthFilter jwtAuthFilter;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
-    
+
 
     public ConfigurationSecurity(JwtAuthFilter jwtAuthFilter, JwtAccessDeniedHandler jwtAccessDeniedHandler, JwtAuthEntryPoint jwtAuthEntryPoint) {
         this.jwtAuthFilter = jwtAuthFilter;
@@ -37,17 +37,17 @@ public class ConfigurationSecurity {
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers("/api/v1/auth/**")
+                            .requestMatchers("/authentification/**")
                             .permitAll()
-                            .requestMatchers("/api/v1/users/me")
+                            .requestMatchers("/me")
                             .hasAnyRole("ADMIN", "PARRAIN", "ASSOCIATION", "ENFANT")
-                            .requestMatchers("/api/v1/Parrain/**")
+                            .requestMatchers("/Parrain/**")
                             .hasRole("PARRAIN")
-                            .requestMatchers("/api/v1/Associations/**")
+                            .requestMatchers("/Associations/**")
                             .hasRole("ASSOCIATION")
-                            .requestMatchers("/api/v1/Enfant/**")
+                            .requestMatchers("/Enfant/**")
                             .hasRole("ENFANT")
-                            .requestMatchers("/api/v1/admin/**")
+                            .requestMatchers("/admin/**")
                             .hasRole("ADMIN")
                             .anyRequest()
                             .authenticated();

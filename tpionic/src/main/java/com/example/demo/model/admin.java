@@ -1,7 +1,8 @@
 package com.example.demo.model;
 
 import com.example.demo.DTO.DtoAdmin;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Admin extends Utilisateur{
+public class Admin extends Utilisateur {
     private String nom;
     @OneToMany(mappedBy = "administrateur")
-    private List<Association> Associations=new ArrayList<>();
+    private List<Association> Associations = new ArrayList<>();
 
     public DtoAdmin toDto() {
         return new DtoAdmin(

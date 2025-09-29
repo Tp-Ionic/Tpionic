@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,6 @@ public class Association extends Utilisateur {
     @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enfant> enfants = new ArrayList<>();
     @ManyToOne
-    @JoinColumn(nullable = false,name="id_Administrateur")
+    @JoinColumn(nullable = false, name = "id_Administrateur")
     private Admin administrateur;
 }

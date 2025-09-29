@@ -12,18 +12,18 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefreshToken {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-@OneToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private Utilisateur user;
-@Column(nullable = false)
-private Instant dateCreation;
-@Column(nullable = false)
-   private Instant dateExpiration;
-@Column(nullable = false)
-private String token;
+    @Column(nullable = false)
+    private Instant dateCreation;
+    @Column(nullable = false)
+    private Instant dateExpiration;
+    @Column(nullable = false)
+    private String token;
 
 
 }

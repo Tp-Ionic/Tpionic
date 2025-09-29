@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Enfant;
-import com.example.demo.model.Rapport_scolaire;
 import com.example.demo.model.Frais_scolaire;
 import com.example.demo.model.Parent;
+import com.example.demo.model.Rapport_scolaire;
 import com.example.demo.service.service_parent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

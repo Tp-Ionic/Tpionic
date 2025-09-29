@@ -9,8 +9,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "parrains")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Parrain extends Utilisateur {
 
     private String nom;

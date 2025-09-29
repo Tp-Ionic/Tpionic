@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken,Integer> {
-    Optional<RefreshToken> findByiduserandtoken(int id,String token);
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Integer> {
+    Optional<RefreshToken> findByUserIdAndToken(int id, String token);
+
+    Optional<RefreshToken> findByUserId(int id);
 
 }

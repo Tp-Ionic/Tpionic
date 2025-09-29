@@ -21,7 +21,6 @@ public class Frais_scolaire {
     private int montant;
 
 
-
     @ManyToOne
     @JoinColumn(name = "enfant_id", nullable = false)
     private Enfant enfant;

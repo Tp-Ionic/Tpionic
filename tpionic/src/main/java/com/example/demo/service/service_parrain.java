@@ -18,7 +18,7 @@ public class service_parrain {
     private EntityManager em;
 
     @Transactional
-    public dto_parrain.Response creer(CreateRequest req){
+    public dto_parrain.Response creer(CreateRequest req) {
         Parrain p = new Parrain();
         p.setNom(req.nom);
         p.setPrenom(req.prenom);
@@ -33,20 +33,20 @@ public class service_parrain {
         return dto_parrain.of(p);
     }
 
-    public dto_parrain.Response get(int id){
+    public dto_parrain.Response get(int id) {
         Parrain p = em.find(Parrain.class, (long) id);
         if (p == null) throw new IllegalArgumentException("Parrain introuvable");
         return dto_parrain.of(p);
     }
 
-    public List<dto_parrain.Response> list(){
+    public List<dto_parrain.Response> list() {
         return em.createQuery("select p from Parrain p order by p.id desc", Parrain.class)
                 .getResultList()
                 .stream().map(dto_parrain::of).toList();
     }
 
     @Transactional
-    public dto_parrain.Response update(int id, UpdateRequest req){
+    public dto_parrain.Response update(int id, UpdateRequest req) {
         Parrain p = em.find(Parrain.class, (long) id);
         if (p == null) throw new IllegalArgumentException("Parrain introuvable");
         dto_parrain.applyUpdate(p, req);
@@ -55,7 +55,7 @@ public class service_parrain {
     }
 
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
         Parrain p = em.find(Parrain.class, (long) id);
         if (p != null) em.remove(p);
     }
