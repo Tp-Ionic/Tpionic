@@ -18,6 +18,16 @@ public class controller_enfant {
     @Autowired
     private service_enfant enfantService;
 
+    @PostMapping
+    public ResponseEntity<?> createEnfant(@RequestBody dto_enfant.CreateRequest request) {
+        try {
+            dto_enfant.Response response = enfantService.createEnfant(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la création: " + e.getMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<dto_enfant.Response>> getAllEnfants() {
         List<dto_enfant.Response> enfants = enfantService.getAllEnfants();

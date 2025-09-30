@@ -11,11 +11,12 @@ import com.example.demo.model.Enfant;
 import com.example.demo.model.Parrainage;
 import com.example.demo.model.paiement;
 import com.example.demo.model.ConfirmationPaiement;
+import com.example.demo.repository.ParrainRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,9 @@ public class service_parrain {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    private ParrainRepository parrainRepository;
 
     @Autowired
     private service_rapport_scolaire rapportService;
@@ -46,16 +50,26 @@ public class service_parrain {
         return dto_parrain.of(p);
     }
 
+    @Transactional(readOnly = true)
     public dto_parrain.Response get(int id){
         Parrain p = em.find(Parrain.class, (long) id);
         if (p == null) throw new IllegalArgumentException("Parrain introuvable");
         return dto_parrain.of(p);
     }
 
+    @Transactional(readOnly = true)
     public List<dto_parrain.Response> list(){
         return em.createQuery("select p from Parrain p order by p.id desc", Parrain.class)
                 .getResultList()
                 .stream().map(dto_parrain::of).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<dto_parrain.Response> getParrainsActifs(){
+        return parrainRepository.findByActif(true)
+                .stream()
+                .map(dto_parrain::of)
+                .toList();
     }
 
     @Transactional
@@ -78,6 +92,7 @@ public class service_parrain {
     // ===== NOUVELLES FONCTIONNALITÉS POUR LE PARRAIN =====
 
     // Obtenir les enfants parrainés par ce parrain
+    @Transactional(readOnly = true)
     public List<dto_enfant.Response> getEnfantsParraines(Integer parrainId) {
         List<Parrainage> parrainages = em.createQuery(
             "select p from Parrainage p where p.parrain.id = :parrainId and p.statut = 'ACCEPTE'", 
@@ -92,6 +107,7 @@ public class service_parrain {
     }
 
     // Obtenir les rapports scolaires d'un enfant parrainé
+    @Transactional(readOnly = true)
     public List<dto_rapport_scolaire.Response> getRapportsScolairesEnfant(Integer parrainId, Long enfantId, String anneeScolaire) {
         // Vérifier que le parrain parraine bien cet enfant
         Parrainage parrainage = em.createQuery(
@@ -109,6 +125,7 @@ public class service_parrain {
     }
 
     // Obtenir les bulletins PDF d'un enfant parrainé
+    @Transactional(readOnly = true)
     public dto_enfant.Response getBulletinsEnfant(Integer parrainId, Long enfantId) {
         // Vérifier que le parrain parraine bien cet enfant
         Parrainage parrainage = em.createQuery(
@@ -126,6 +143,7 @@ public class service_parrain {
     }
 
     // Obtenir les photos d'activités d'un enfant parrainé
+    @Transactional(readOnly = true)
     public dto_enfant.Response getPhotosActivitesEnfant(Integer parrainId, Long enfantId) {
         // Vérifier que le parrain parraine bien cet enfant
         Parrainage parrainage = em.createQuery(
@@ -143,6 +161,7 @@ public class service_parrain {
     }
 
     // Obtenir les listes de présence d'un enfant parrainé
+    @Transactional(readOnly = true)
     public dto_enfant.Response getListesPresenceEnfant(Integer parrainId, Long enfantId) {
         // Vérifier que le parrain parraine bien cet enfant
         Parrainage parrainage = em.createQuery(
@@ -160,6 +179,7 @@ public class service_parrain {
     }
 
     // Obtenir les confirmations de paiement du parrain
+    @Transactional(readOnly = true)
     public List<dto_confirmation_paiement.Response> getConfirmationsPaiement(Integer parrainId) {
         List<paiement> paiements = em.createQuery(
             "select p from paiement p where p.parrain.id = :parrainId", 
@@ -174,6 +194,7 @@ public class service_parrain {
     }
 
     // Obtenir le résumé complet d'un enfant parrainé
+    @Transactional(readOnly = true)
     public dto_parrain.ResumeEnfantResponse getResumeCompletEnfant(Integer parrainId, Long enfantId) {
         // Vérifier que le parrain parraine bien cet enfant
         Parrainage parrainage = em.createQuery(

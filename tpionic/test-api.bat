@@ -7,7 +7,7 @@ curl -X GET http://localhost:8081/actuator/health
 echo.
 echo.
 
-echo Test 2: Créer une association...
+echo Test 2: Créer une association (statut EN_ATTENTE)...
 curl -X POST http://localhost:8081/api/associations ^
   -H "Content-Type: application/json" ^
   -d "{\"nom\":\"Test Association\",\"email\":\"test@test.com\",\"motDePasse\":\"test123\",\"telephone\":\"+223123456789\",\"adresse\":\"Test Address\",\"pays\":\"Mali\",\"ville\":\"Bamako\",\"description\":\"Test Description\"}"
@@ -44,5 +44,36 @@ echo Test 7: Vérifier les parrainages créés...
 curl -X GET http://localhost:8081/api/parrainages
 echo.
 echo.
-
+echo Test 8: Voir les associations en attente...
+curl -X GET http://localhost:8081/api/associations/en-attente
+echo.
+echo.
+echo Test 9: Valider une association (ACCEPTER)...
+curl -X PUT "http://localhost:8081/api/associations/1/valider?statut=ACCEPTE"
+echo.
+echo.
+echo Test 10: Vérifier le statut de l'association...
+curl -X GET http://localhost:8081/api/associations/1
+echo.
+echo.
+echo Test 11: Créer une déclaration d'absence (par le parent)...
+curl -X POST http://localhost:8081/api/absences ^
+  -H "Content-Type: application/json" ^
+  -d "{\"parentId\":1,\"enfantId\":1,\"dateDebut\":\"2024-12-01\",\"dateFin\":\"2024-12-15\",\"raison\":\"Voyage familial\",\"details\":\"L'enfant doit voyager avec sa famille pour des raisons personnelles\"}"
+echo.
+echo.
+echo Test 12: Voir les absences en attente pour l'association...
+curl -X GET http://localhost:8081/api/absences/association/1/en-attente
+echo.
+echo.
+echo Test 13: Valider une absence (ACCEPTER)...
+curl -X PUT http://localhost:8081/api/absences/1/valider ^
+  -H "Content-Type: application/json" ^
+  -d "{\"statut\":\"ACCEPTE\",\"reponseAssociation\":\"Absence acceptée. Bon voyage !\"}"
+echo.
+echo.
+echo Test 14: Voir les absences actives...
+curl -X GET http://localhost:8081/api/absences/actives
+echo.
+echo.
 pause

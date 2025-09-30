@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.dto_parrainage;
+import com.example.demo.model.Parrain;
+import com.example.demo.model.Enfant;
 import com.example.demo.service.service_parrainage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/parrainages")
@@ -33,6 +37,56 @@ public class controller_parrainage {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Erreur lors de la création: " + e.getMessage());
+        }
+    }
+
+    // Nouveau endpoint simplifié : parrainer un enfant (clic sur bouton + confirmation)
+    @PostMapping("/parrainer-enfant")
+    public ResponseEntity<?> parrainerEnfant(@RequestBody dto_parrainage.CreateRequest request) {
+        try {
+            // Validation des champs obligatoires (simplifiés)
+            if (request.parrainId == null) {
+                return ResponseEntity.badRequest().body("L'ID du parrain est obligatoire");
+            }
+            if (request.enfantId == null) {
+                return ResponseEntity.badRequest().body("L'ID de l'enfant est obligatoire");
+            }
+
+            dto_parrainage.Response response = parrainageService.createDemandeParrainageSimple(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la création: " + e.getMessage());
+        }
+    }
+
+    // Endpoint pour obtenir les informations de confirmation (modal)
+    @GetMapping("/confirmation/{parrainId}/{enfantId}")
+    public ResponseEntity<?> getInformationsConfirmation(@PathVariable Integer parrainId, @PathVariable Long enfantId) {
+        try {
+            // Vérifier que le parrain existe
+            Parrain parrain = parrainageService.getParrainById(parrainId);
+            if (parrain == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Vérifier que l'enfant existe
+            Enfant enfant = parrainageService.getEnfantById(enfantId);
+            if (enfant == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Retourner les informations pour le modal
+            Map<String, Object> confirmationInfo = new HashMap<>();
+            confirmationInfo.put("parrainNom", parrain.getNom() + " " + parrain.getPrenom());
+            confirmationInfo.put("enfantNom", enfant.getNom() + " " + enfant.getPrenom());
+            confirmationInfo.put("enfantAge", enfant.getAge());
+            confirmationInfo.put("associationNom", enfant.getAssociation().getNom());
+            confirmationInfo.put("montantMensuel", 50.0); // Montant par défaut
+            confirmationInfo.put("message", "Êtes-vous sûr de vouloir parrainer " + enfant.getNom() + " " + enfant.getPrenom() + " ?");
+
+            return ResponseEntity.ok(confirmationInfo);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la récupération des informations: " + e.getMessage());
         }
     }
 
@@ -91,6 +145,12 @@ public class controller_parrainage {
     @GetMapping("/parrain/{parrainId}/en-attente")
     public ResponseEntity<List<dto_parrainage.Response>> getParrainagesEnAttente(@PathVariable Integer parrainId) {
         List<dto_parrainage.Response> parrainages = parrainageService.getParrainagesEnAttente(parrainId);
+        return ResponseEntity.ok(parrainages);
+    }
+
+    @GetMapping("/parrain/{parrainId}/en-attente-paiement")
+    public ResponseEntity<List<dto_parrainage.Response>> getParrainagesEnAttentePaiement(@PathVariable Integer parrainId) {
+        List<dto_parrainage.Response> parrainages = parrainageService.getParrainagesEnAttentePaiement(parrainId);
         return ResponseEntity.ok(parrainages);
     }
 

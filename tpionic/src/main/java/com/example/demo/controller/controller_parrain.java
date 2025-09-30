@@ -79,6 +79,16 @@ public class controller_parrain {
         return service.get(id);
     }
 
+    @GetMapping("/actifs")
+    public ResponseEntity<?> getParrainsActifs() {
+        try {
+            List<dto_parrain.Response> parrains = service.getParrainsActifs();
+            return ResponseEntity.ok(parrains);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erreur: " + e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public dto_parrain.Response update(@PathVariable int id, @RequestBody UpdateRequest req){
         return service.update(id, req);

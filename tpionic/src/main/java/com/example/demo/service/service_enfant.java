@@ -9,6 +9,7 @@ import com.example.demo.repository.EnfantRepository;
 import com.example.demo.repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,26 +26,35 @@ public class service_enfant {
     @Autowired
     private ParentRepository parentRepository;
 
+    @Transactional
     public dto_enfant.Response createEnfant(dto_enfant.CreateRequest request) {
         // Vérifier que l'association existe
         Association association = associationRepository.findById(request.associationId)
                 .orElseThrow(() -> new RuntimeException("Association non trouvée avec l'ID: " + request.associationId));
 
-        // Créer le compte parent
-        Parent parent = new Parent();
-        parent.setNom(request.parentNom);
-        parent.setPrenom(request.parentPrenom);
-        parent.setEmail(request.parentEmail);
-        parent.setMotDePasse(request.parentMotDePasse);
-        parent.setTelephone(request.parentTelephone);
-        parent.setAdresse(request.parentAdresse);
-        parent.setPays(request.parentPays);
-        parent.setVille(request.parentVille);
-        parent.setProfession(request.parentProfession);
-        parent.setRelationAvecEnfant(request.parentRelationAvecEnfant);
-        parent.setActif(true);
+        Parent savedParent;
+        
+        // Si parentId est fourni, utiliser un parent existant
+        if (request.parentId != null) {
+            savedParent = parentRepository.findById(request.parentId)
+                    .orElseThrow(() -> new RuntimeException("Parent non trouvé avec l'ID: " + request.parentId));
+        } else {
+            // Créer le compte parent
+            Parent parent = new Parent();
+            parent.setNom(request.parentNom);
+            parent.setPrenom(request.parentPrenom);
+            parent.setEmail(request.parentEmail);
+            parent.setMotDePasse(request.parentMotDePasse);
+            parent.setTelephone(request.parentTelephone);
+            parent.setAdresse(request.parentAdresse);
+            parent.setPays(request.parentPays);
+            parent.setVille(request.parentVille);
+            parent.setProfession(request.parentProfession);
+            parent.setRelationAvecEnfant(request.parentRelationAvecEnfant);
+            parent.setActif(true);
 
-        Parent savedParent = parentRepository.save(parent);
+            savedParent = parentRepository.save(parent);
+        }
 
         // Créer l'enfant
         Enfant enfant = new Enfant();
@@ -61,6 +71,7 @@ public class service_enfant {
         return dto_enfant.of(savedEnfant);
     }
 
+    @Transactional(readOnly = true)
     public List<dto_enfant.Response> getAllEnfants() {
         return enfantRepository.findAll()
                 .stream()
@@ -68,6 +79,7 @@ public class service_enfant {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<dto_enfant.Response> getEnfantsByAssociation(Long associationId) {
         return enfantRepository.findByAssociationId(associationId)
                 .stream()
@@ -75,11 +87,13 @@ public class service_enfant {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public Optional<dto_enfant.Response> getEnfantById(Long id) {
         return enfantRepository.findById(id)
                 .map(dto_enfant::of);
     }
 
+    @Transactional
     public dto_enfant.Response updateEnfant(Long id, dto_enfant.UpdateRequest request) {
         Enfant enfant = enfantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Enfant non trouvé avec l'ID: " + id));
@@ -89,6 +103,7 @@ public class service_enfant {
         return dto_enfant.of(updatedEnfant);
     }
 
+    @Transactional
     public void deleteEnfant(Long id) {
         if (!enfantRepository.existsById(id)) {
             throw new RuntimeException("Enfant non trouvé avec l'ID: " + id);
@@ -96,6 +111,7 @@ public class service_enfant {
         enfantRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<dto_enfant.Response> searchEnfantsByName(String nom) {
         return enfantRepository.findByNomContainingIgnoreCase(nom)
                 .stream()
@@ -103,6 +119,7 @@ public class service_enfant {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<dto_enfant.Response> searchEnfantsByPrenom(String prenom) {
         return enfantRepository.findByPrenomContainingIgnoreCase(prenom)
                 .stream()
@@ -110,6 +127,7 @@ public class service_enfant {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<dto_enfant.Response> getEnfantsNonParraines(Long associationId) {
         return enfantRepository.findEnfantsNonParrainesByAssociation(associationId)
                 .stream()

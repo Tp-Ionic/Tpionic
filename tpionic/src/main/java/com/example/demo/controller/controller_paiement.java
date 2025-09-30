@@ -80,4 +80,120 @@ public class controller_paiement {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Endpoints de filtrage
+    @GetMapping("/parrain/{parrainId}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByParrain(@PathVariable Integer parrainId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByParrain(parrainId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/enfant/{enfantId}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByEnfant(@PathVariable Long enfantId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByEnfant(enfantId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/type/{typePaiement}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByType(@PathVariable String typePaiement) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByType(typePaiement);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByDate(@PathVariable String date) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByDate(date);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/periode/{dateDebut}/{dateFin}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByPeriode(
+            @PathVariable String dateDebut, 
+            @PathVariable String dateFin) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByPeriode(dateDebut, dateFin);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/parrain/{parrainId}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByAssociationAndParrain(
+            @PathVariable Long associationId, 
+            @PathVariable Integer parrainId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByAssociationAndParrain(associationId, parrainId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/enfant/{enfantId}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByAssociationAndEnfant(
+            @PathVariable Long associationId, 
+            @PathVariable Long enfantId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByAssociationAndEnfant(associationId, enfantId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/type/{typePaiement}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByAssociationAndType(
+            @PathVariable Long associationId, 
+            @PathVariable String typePaiement) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByAssociationAndType(associationId, typePaiement);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/periode/{dateDebut}/{dateFin}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByAssociationAndPeriode(
+            @PathVariable Long associationId, 
+            @PathVariable String dateDebut, 
+            @PathVariable String dateFin) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByAssociationAndPeriode(associationId, dateDebut, dateFin);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/statut/{statut}")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsByAssociationAndStatut(
+            @PathVariable Long associationId, 
+            @PathVariable String statut) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsByAssociationAndStatut(associationId, statut);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/valide")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsValidesByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsValidesByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/non-valide")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsNonValidesByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsNonValidesByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/en-attente")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsEnAttenteByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsEnAttenteByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/rejete")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsRejetesByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsRejetesByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/confirme")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsConfirmesByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsConfirmesByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
+
+    @GetMapping("/association/{associationId}/recu")
+    public ResponseEntity<List<dto_paiement.Response>> getPaiementsRecusByAssociation(@PathVariable Long associationId) {
+        List<dto_paiement.Response> paiements = paiementService.getPaiementsRecusByAssociation(associationId);
+        return ResponseEntity.ok(paiements);
+    }
 }

@@ -11,6 +11,7 @@ import com.example.demo.repository.EnfantRepository;
 import com.example.demo.repository.AssociationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +32,7 @@ public class service_parrainage {
     @Autowired
     private AssociationRepository associationRepository;
 
+    @Transactional
     public dto_parrainage.Response createDemandeParrainage(dto_parrainage.CreateRequest request) {
         // Vérifier que l'enfant existe
         Enfant enfant = enfantRepository.findById(request.enfantId)
@@ -60,6 +62,7 @@ public class service_parrainage {
         return dto_parrainage.of(savedParrainage);
     }
 
+    @Transactional(readOnly = true)
     public List<dto_parrainage.Response> getAllParrainages() {
         return parrainageRepository.findAll()
                 .stream()
@@ -67,11 +70,13 @@ public class service_parrainage {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public Optional<dto_parrainage.Response> getParrainageById(Long id) {
         return parrainageRepository.findById(id)
                 .map(dto_parrainage::of);
     }
 
+    @Transactional(readOnly = true)
     public List<dto_parrainage.Response> getParrainagesByParrain(Integer parrainId) {
         return parrainageRepository.findByParrainId(parrainId)
                 .stream()
@@ -79,6 +84,7 @@ public class service_parrainage {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<dto_parrainage.Response> getParrainagesByEnfant(Long enfantId) {
         return parrainageRepository.findByEnfantId(enfantId)
                 .stream()
@@ -86,6 +92,7 @@ public class service_parrainage {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<dto_parrainage.Response> getParrainagesByAssociation(Long associationId) {
         return parrainageRepository.findByAssociationId(associationId)
                 .stream()
@@ -93,6 +100,7 @@ public class service_parrainage {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<dto_parrainage.Response> getParrainagesEnAttente(Integer parrainId) {
         return parrainageRepository.findByParrainIdAndStatut(parrainId, "EN_ATTENTE")
                 .stream()
@@ -100,6 +108,15 @@ public class service_parrainage {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<dto_parrainage.Response> getParrainagesEnAttentePaiement(Integer parrainId) {
+        return parrainageRepository.findByParrainIdAndStatut(parrainId, "EN_ATTENTE_PAIEMENT")
+                .stream()
+                .map(dto_parrainage::of)
+                .toList();
+    }
+
+    @Transactional
     public dto_parrainage.Response accepterParrainage(Long id, String messageReponse) {
         Parrainage parrainage = parrainageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Parrainage non trouvé avec l'ID: " + id));
@@ -112,6 +129,7 @@ public class service_parrainage {
         return dto_parrainage.of(updatedParrainage);
     }
 
+    @Transactional
     public dto_parrainage.Response refuserParrainage(Long id, String messageReponse) {
         Parrainage parrainage = parrainageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Parrainage non trouvé avec l'ID: " + id));
@@ -123,6 +141,7 @@ public class service_parrainage {
         return dto_parrainage.of(updatedParrainage);
     }
 
+    @Transactional
     public dto_parrainage.Response updateParrainage(Long id, dto_parrainage.UpdateRequest request) {
         Parrainage parrainage = parrainageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Parrainage non trouvé avec l'ID: " + id));
@@ -139,7 +158,8 @@ public class service_parrainage {
         parrainageRepository.deleteById(id);
     }
 
-    public dto_parrainage.Response createParrainageDirect(dto_parrainage.CreateRequest request) {
+    // Nouvelle méthode pour créer une demande de parrainage simple (sans message personnalisé)
+    public dto_parrainage.Response createDemandeParrainageSimple(dto_parrainage.CreateRequest request) {
         // Vérifier que le parrain existe
         Parrain parrain = parrainRepository.findById(request.parrainId)
                 .orElseThrow(() -> new RuntimeException("Parrain non trouvé avec l'ID: " + request.parrainId));
@@ -149,9 +169,16 @@ public class service_parrainage {
                 .orElseThrow(() -> new RuntimeException("Enfant non trouvé avec l'ID: " + request.enfantId));
 
         // Vérifier que l'enfant n'est pas déjà parrainé
-        List<Parrainage> existingParrainages = parrainageRepository.findByEnfantIdAndStatut(request.enfantId, "ACCEPTE");
+        List<Parrainage> existingParrainages = parrainageRepository.findByEnfantIdAndStatut(request.enfantId, "ACTIF");
         if (!existingParrainages.isEmpty()) {
             throw new RuntimeException("Cet enfant est déjà parrainé");
+        }
+
+        // Vérifier qu'il n'y a pas déjà une demande en cours pour ce parrain et cet enfant
+        Optional<Parrainage> existingDemande = parrainageRepository.findByParrainIdAndEnfantIdAndStatut(
+                request.parrainId, request.enfantId, "EN_ATTENTE_PAIEMENT");
+        if (existingDemande.isPresent()) {
+            throw new RuntimeException("Une demande de parrainage est déjà en cours pour cet enfant");
         }
 
         // Récupérer l'association de l'enfant
@@ -164,15 +191,71 @@ public class service_parrainage {
         parrainage.setParrain(parrain);
         parrainage.setEnfant(enfant);
         parrainage.setAssociation(association);
-        parrainage.setStatut("ACCEPTE"); // Parrainage direct accepté automatiquement
+        parrainage.setStatut("EN_ATTENTE_PAIEMENT"); // En attente de paiement
+        parrainage.setDateDemande(LocalDate.now());
+        parrainage.setMontantMensuel(request.montantMensuel != null ? request.montantMensuel : 50.0); // Montant par défaut
+        parrainage.setMessageDemande("Demande de parrainage créée via l'interface"); // Message automatique
+        parrainage.setNotes("Parrainage créé par confirmation du modal");
+
+        Parrainage savedParrainage = parrainageRepository.save(parrainage);
+        return dto_parrainage.of(savedParrainage);
+    }
+
+    // Méthode pour créer un parrainage direct (sans demande préalable)
+    @Transactional
+    public dto_parrainage.Response createParrainageDirect(dto_parrainage.CreateRequest request) {
+        // Vérifier que l'enfant existe
+        Enfant enfant = enfantRepository.findById(request.enfantId)
+                .orElseThrow(() -> new RuntimeException("Enfant non trouvé avec l'ID: " + request.enfantId));
+
+        // Vérifier que l'association existe
+        Association association = associationRepository.findById(request.associationId)
+                .orElseThrow(() -> new RuntimeException("Association non trouvée avec l'ID: " + request.associationId));
+
+        Parrainage parrainage = new Parrainage();
+        parrainage.setEnfant(enfant);
+        parrainage.setAssociation(association);
+        parrainage.setStatut("ACTIF"); // Directement actif
         parrainage.setDateDemande(LocalDate.now());
         parrainage.setDateDebut(LocalDate.now());
         parrainage.setMontantMensuel(request.montantMensuel);
         parrainage.setMessageDemande(request.messageDemande);
-        parrainage.setMessageReponse("Parrainage direct accepté");
         parrainage.setNotes(request.notes);
 
         Parrainage savedParrainage = parrainageRepository.save(parrainage);
         return dto_parrainage.of(savedParrainage);
+    }
+
+    // Méthode pour valider automatiquement le parrainage après paiement
+    @Transactional
+    public dto_parrainage.Response validerParrainageApresPaiement(Integer parrainId, Long enfantId) {
+        // Trouver le parrainage en attente de paiement
+        Optional<Parrainage> parrainageOpt = parrainageRepository.findByParrainIdAndEnfantIdAndStatut(
+                parrainId, enfantId, "EN_ATTENTE_PAIEMENT");
+        
+        if (parrainageOpt.isEmpty()) {
+            throw new RuntimeException("Aucune demande de parrainage en attente de paiement trouvée");
+        }
+
+        Parrainage parrainage = parrainageOpt.get();
+        
+        // Valider le parrainage
+        parrainage.setStatut("ACTIF");
+        parrainage.setDateDebut(LocalDate.now());
+        parrainage.setMessageReponse("Parrainage validé après paiement");
+
+        Parrainage savedParrainage = parrainageRepository.save(parrainage);
+        return dto_parrainage.of(savedParrainage);
+    }
+
+    // Méthodes utilitaires pour le contrôleur
+    @Transactional(readOnly = true)
+    public Parrain getParrainById(Integer parrainId) {
+        return parrainRepository.findById(parrainId).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Enfant getEnfantById(Long enfantId) {
+        return enfantRepository.findById(enfantId).orElse(null);
     }
 }

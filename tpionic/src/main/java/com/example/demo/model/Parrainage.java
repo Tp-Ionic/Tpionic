@@ -30,7 +30,7 @@ public class Parrainage {
     private Enfant enfant;
 
     @Column(nullable = false)
-    private String statut; // EN_ATTENTE, ACCEPTE, REFUSE, ACTIF, TERMINE
+    private String statut; // EN_ATTENTE_PAIEMENT, EN_ATTENTE, ACCEPTE, REFUSE, ACTIF, TERMINE
 
     @Column(nullable = false)
     private LocalDate dateDemande;

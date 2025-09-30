@@ -9,6 +9,7 @@ import com.example.demo.repository.PaiementRepository;
 import com.example.demo.repository.AssociationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ public class service_confirmation_paiement {
     private AssociationRepository associationRepository;
 
     // Confirmer la réception d'un paiement
+    @Transactional
     public dto_confirmation_paiement.Response confirmerPaiement(dto_confirmation_paiement.CreateRequest request) {
         // Vérifier que le paiement existe
         paiement paiement = paiementRepository.findById(request.paiementId)
@@ -50,6 +52,7 @@ public class service_confirmation_paiement {
     }
 
     // Lister toutes les confirmations
+    @Transactional(readOnly = true)
     public List<dto_confirmation_paiement.Response> getAllConfirmations() {
         return confirmationRepository.findAll()
                 .stream()
@@ -58,12 +61,14 @@ public class service_confirmation_paiement {
     }
 
     // Obtenir une confirmation par ID
+    @Transactional(readOnly = true)
     public Optional<dto_confirmation_paiement.Response> getConfirmationById(Long id) {
         return confirmationRepository.findById(id)
                 .map(dto_confirmation_paiement::of);
     }
 
     // Obtenir les confirmations d'un paiement
+    @Transactional(readOnly = true)
     public List<dto_confirmation_paiement.Response> getConfirmationsByPaiement(Long paiementId) {
         return confirmationRepository.findByPaiementId(paiementId)
                 .stream()
@@ -72,6 +77,7 @@ public class service_confirmation_paiement {
     }
 
     // Obtenir les confirmations d'une association
+    @Transactional(readOnly = true)
     public List<dto_confirmation_paiement.Response> getConfirmationsByAssociation(Long associationId) {
         return confirmationRepository.findByAssociationId(associationId)
                 .stream()
@@ -80,6 +86,7 @@ public class service_confirmation_paiement {
     }
 
     // Obtenir les confirmations par statut
+    @Transactional(readOnly = true)
     public List<dto_confirmation_paiement.Response> getConfirmationsByStatut(String statut) {
         return confirmationRepository.findByStatut(statut)
                 .stream()
@@ -88,6 +95,7 @@ public class service_confirmation_paiement {
     }
 
     // Modifier une confirmation
+    @Transactional
     public dto_confirmation_paiement.Response updateConfirmation(Long id, dto_confirmation_paiement.UpdateRequest request) {
         ConfirmationPaiement confirmation = confirmationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Confirmation non trouvée avec l'ID: " + id));
@@ -98,6 +106,7 @@ public class service_confirmation_paiement {
     }
 
     // Supprimer une confirmation
+    @Transactional
     public void deleteConfirmation(Long id) {
         if (!confirmationRepository.existsById(id)) {
             throw new RuntimeException("Confirmation non trouvée avec l'ID: " + id);

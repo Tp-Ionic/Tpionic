@@ -44,6 +44,9 @@ public class Association {
     private String description;
     private String logoUrl;
     private Boolean actif = true;
+    
+    @Column(nullable = false)
+    private String statut = "EN_ATTENTE"; // EN_ATTENTE, ACCEPTE, REFUSE
 
     @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enfant> enfants = new ArrayList<>();

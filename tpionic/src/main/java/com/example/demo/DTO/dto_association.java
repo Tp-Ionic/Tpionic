@@ -27,6 +27,7 @@ public class dto_association {
         public String description;
         public String logoUrl;
         public Boolean actif;
+        public String statut; // Pour l'admin : ACCEPTE, REFUSE
     }
 
     public static class Response {
@@ -40,6 +41,7 @@ public class dto_association {
         public String description;
         public String logoUrl;
         public Boolean actif;
+        public String statut;
         public int nombreEnfants;
     }
 
@@ -55,6 +57,7 @@ public class dto_association {
         r.description = a.getDescription();
         r.logoUrl = a.getLogoUrl();
         r.actif = a.getActif();
+        r.statut = a.getStatut();
         r.nombreEnfants = a.getEnfants() != null ? a.getEnfants().size() : 0;
         return r;
     }
@@ -71,5 +74,6 @@ public class dto_association {
         if (u.description != null) a.setDescription(u.description);
         if (u.logoUrl != null) a.setLogoUrl(u.logoUrl);
         if (u.actif != null) a.setActif(u.actif);
+        if (u.statut != null) a.setStatut(u.statut);
     }
 }

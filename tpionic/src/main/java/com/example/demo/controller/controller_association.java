@@ -99,6 +99,23 @@ public class controller_association {
     }
 
     // Authentification supprimée - sera gérée par Spring Security
+    
+    // Endpoints pour l'admin
+    @GetMapping("/en-attente")
+    public ResponseEntity<List<dto_association.Response>> getAssociationsEnAttente() {
+        List<dto_association.Response> associations = associationService.getAssociationsEnAttente();
+        return ResponseEntity.ok(associations);
+    }
+    
+    @PutMapping("/{id}/valider")
+    public ResponseEntity<?> validerAssociation(@PathVariable Long id, @RequestParam String statut) {
+        try {
+            dto_association.Response response = associationService.validerAssociation(id, statut);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la validation: " + e.getMessage());
+        }
+    }
 
     // Gestion des enfants par association
     @PostMapping("/{associationId}/enfants")

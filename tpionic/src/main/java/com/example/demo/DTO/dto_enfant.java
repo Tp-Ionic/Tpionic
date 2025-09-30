@@ -15,8 +15,9 @@ public class dto_enfant {
         public int age;
         public String apropos_de_enfant;
         public Long associationId;
+        public Long parentId; // Pour utiliser un parent existant
         
-        // Informations du parent
+        // Informations du parent (si création d'un nouveau parent)
         public String parentNom;
         public String parentPrenom;
         public String parentEmail;

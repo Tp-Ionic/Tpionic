@@ -1,0 +1,896 @@
+{
+  "info": {
+    "name": "TPIONIC - Workflow Complet",
+    "description": "Collection complète pour tester le workflow TPIONIC avec 2 associations, 4 sponsors, 3 enfants (dont 1 avec 2 sponsors), paiements et dépenses",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Associations",
+      "item": [
+        {
+          "name": "Créer Association Bamako",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Association Solidarité Bamako\",\n  \"email\": \"contact@solidarite-bamako.org\",\n  \"telephone\": \"+223 20 22 33 44\",\n  \"adresse\": \"Avenue de l'Indépendance, Bamako\",\n  \"ville\": \"Bamako\",\n  \"pays\": \"Mali\",\n  \"description\": \"Association pour l'éducation des enfants démunis à Bamako\",\n  \"motDePasse\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/associations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "associations"]
+            }
+          }
+        },
+        {
+          "name": "Créer Association Ségou",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Fondation Education Ségou\",\n  \"email\": \"info@education-segou.ml\",\n  \"telephone\": \"+223 21 44 55 66\",\n  \"adresse\": \"Quartier Hamdallaye, Ségou\",\n  \"ville\": \"Ségou\",\n  \"pays\": \"Mali\",\n  \"description\": \"Fondation pour l'éducation et le développement à Ségou\",\n  \"motDePasse\": \"password456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/associations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "associations"]
+            }
+          }
+        },
+        {
+          "name": "Lister Associations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/associations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "associations"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Parents",
+      "item": [
+        {
+          "name": "Créer Moussa Traoré",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Traoré\",\n  \"prenom\": \"Moussa\",\n  \"email\": \"moussa.traore@email.com\",\n  \"telephone\": \"+223 70 12 34 56\",\n  \"adresse\": \"Quartier Hippodrome, Bamako\",\n  \"ville\": \"Bamako\",\n  \"pays\": \"Mali\",\n  \"motDePasse\": \"parent123\",\n  \"nombreEnfants\": 2,\n  \"profession\": \"Commerçant\",\n  \"revenuMensuel\": 150000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parents"]
+            }
+          }
+        },
+        {
+          "name": "Créer Aminata Cissé",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Cissé\",\n  \"prenom\": \"Aminata\",\n  \"email\": \"aminata.cisse@email.com\",\n  \"telephone\": \"+223 76 98 76 54\",\n  \"adresse\": \"Quartier Niaréla, Ségou\",\n  \"ville\": \"Ségou\",\n  \"pays\": \"Mali\",\n  \"motDePasse\": \"parent456\",\n  \"nombreEnfants\": 1,\n  \"profession\": \"Enseignante\",\n  \"revenuMensuel\": 120000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parents"]
+            }
+          }
+        },
+        {
+          "name": "Lister Parents",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parents"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Sponsors",
+      "item": [
+        {
+          "name": "Créer Pierre Martin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Martin\",\n  \"prenom\": \"Pierre\",\n  \"email\": \"pierre.martin@email.com\",\n  \"telephone\": \"+33 6 12 34 56 78\",\n  \"adresse\": \"123 Rue de la Paix, Paris\",\n  \"ville\": \"Paris\",\n  \"pays\": \"France\",\n  \"motDePasse\": \"sponsor123\",\n  \"profession\": \"Ingénieur\",\n  \"revenuAnnuel\": 65000,\n  \"motivation\": \"Soutenir l'éducation des enfants au Mali\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrains",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrains"]
+            }
+          }
+        },
+        {
+          "name": "Créer Marie Dubois",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Dubois\",\n  \"prenom\": \"Marie\",\n  \"email\": \"marie.dubois@email.com\",\n  \"telephone\": \"+33 6 98 76 54 32\",\n  \"adresse\": \"456 Avenue des Champs, Lyon\",\n  \"ville\": \"Lyon\",\n  \"pays\": \"France\",\n  \"motDePasse\": \"sponsor456\",\n  \"profession\": \"Médecin\",\n  \"revenuAnnuel\": 75000,\n  \"motivation\": \"Contribuer à l'éducation des enfants défavorisés\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrains",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrains"]
+            }
+          }
+        },
+        {
+          "name": "Créer John Johnson",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Johnson\",\n  \"prenom\": \"John\",\n  \"email\": \"john.johnson@email.com\",\n  \"telephone\": \"+1 555 123 4567\",\n  \"adresse\": \"789 Main Street, New York\",\n  \"ville\": \"New York\",\n  \"pays\": \"USA\",\n  \"motDePasse\": \"sponsor789\",\n  \"profession\": \"Avocat\",\n  \"revenuAnnuel\": 85000,\n  \"motivation\": \"Aider les enfants à accéder à l'éducation\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrains",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrains"]
+            }
+          }
+        },
+        {
+          "name": "Créer Anna Mueller",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Mueller\",\n  \"prenom\": \"Anna\",\n  \"email\": \"anna.mueller@email.com\",\n  \"telephone\": \"+49 30 123 456 78\",\n  \"adresse\": \"321 Berliner Straße, Berlin\",\n  \"ville\": \"Berlin\",\n  \"pays\": \"Allemagne\",\n  \"motDePasse\": \"sponsor321\",\n  \"profession\": \"Architecte\",\n  \"revenuAnnuel\": 70000,\n  \"motivation\": \"Participer au développement éducatif en Afrique\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrains",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrains"]
+            }
+          }
+        },
+        {
+          "name": "Lister Sponsors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parrains",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrains"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Enfants",
+      "item": [
+        {
+          "name": "Créer Fatou Traoré (parent existant)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Traoré\",\n  \"prenom\": \"Fatou\",\n  \"dateNaissance\": \"2015-03-15\",\n  \"adresse\": \"Quartier Hippodrome, Bamako\",\n  \"age\": 9,\n  \"apropos_de_enfant\": \"Enfant très motivée pour ses études\",\n  \"associationId\": 1,\n  \"parentId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "enfants"]
+            }
+          }
+        },
+        {
+          "name": "Créer Ibrahim Traoré (nouveau parent)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Traoré\",\n  \"prenom\": \"Ibrahim\",\n  \"dateNaissance\": \"2013-07-22\",\n  \"adresse\": \"Quartier Hippodrome, Bamako\",\n  \"age\": 11,\n  \"apropos_de_enfant\": \"Excellent élève en mathématiques\",\n  \"associationId\": 1,\n  \"parentNom\": \"Traoré\",\n  \"parentPrenom\": \"Moussa\",\n  \"parentEmail\": \"moussa.traore@email.com\",\n  \"parentMotDePasse\": \"parent123\",\n  \"parentTelephone\": \"+223 70 12 34 56\",\n  \"parentAdresse\": \"Quartier Hippodrome, Bamako\",\n  \"parentPays\": \"Mali\",\n  \"parentVille\": \"Bamako\",\n  \"parentProfession\": \"Commerçant\",\n  \"parentRelationAvecEnfant\": \"Père\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "enfants"]
+            }
+          }
+        },
+        {
+          "name": "Créer Aicha Cissé (nouveau parent)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Cissé\",\n  \"prenom\": \"Aicha\",\n  \"dateNaissance\": \"2014-11-08\",\n  \"adresse\": \"Quartier Niaréla, Ségou\",\n  \"age\": 10,\n  \"apropos_de_enfant\": \"Passionnée par la lecture\",\n  \"associationId\": 2,\n  \"parentNom\": \"Cissé\",\n  \"parentPrenom\": \"Aminata\",\n  \"parentEmail\": \"aminata.cisse@email.com\",\n  \"parentMotDePasse\": \"parent456\",\n  \"parentTelephone\": \"+223 76 98 76 54\",\n  \"parentAdresse\": \"Quartier Niaréla, Ségou\",\n  \"parentPays\": \"Mali\",\n  \"parentVille\": \"Ségou\",\n  \"parentProfession\": \"Enseignante\",\n  \"parentRelationAvecEnfant\": \"Mère\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "enfants"]
+            }
+          }
+        },
+        {
+          "name": "Lister Enfants",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "enfants"]
+            }
+          }
+        },
+        {
+          "name": "Enfants Association 1",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/associations/1/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "associations", "1", "enfants"]
+            }
+          }
+        },
+        {
+          "name": "Enfants Association 2",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/associations/2/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "associations", "2", "enfants"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Parrainages",
+      "item": [
+        {
+          "name": "Pierre Martin → Fatou Traoré",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parrainId\": 1,\n  \"enfantId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrainer-enfant",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainer-enfant"]
+            }
+          }
+        },
+        {
+          "name": "Marie Dubois → Fatou Traoré (2ème parrain)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parrainId\": 2,\n  \"enfantId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrainer-enfant",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainer-enfant"]
+            }
+          }
+        },
+        {
+          "name": "John Johnson → Ibrahim Traoré",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parrainId\": 3,\n  \"enfantId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrainer-enfant",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainer-enfant"]
+            }
+          }
+        },
+        {
+          "name": "Anna Mueller → Aicha Cissé",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parrainId\": 4,\n  \"enfantId\": 3\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parrainer-enfant",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainer-enfant"]
+            }
+          }
+        },
+        {
+          "name": "Lister Parrainages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parrainages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainages"]
+            }
+          }
+        },
+        {
+          "name": "Parrainages en attente paiement",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parrainages/en-attente-paiement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainages", "en-attente-paiement"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Paiements",
+      "item": [
+        {
+          "name": "Pierre Martin pour Fatou (50€)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 50.0,\n  \"typePaiement\": \"VIREMENT_BANCAIRE\",\n  \"parrainId\": 1,\n  \"enfantId\": 1,\n  \"datePaiement\": \"2024-10-01\",\n  \"notes\": \"Premier paiement mensuel pour le parrainage de Fatou\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/paiements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements"]
+            }
+          }
+        },
+        {
+          "name": "Marie Dubois pour Fatou (30€)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 30.0,\n  \"typePaiement\": \"PAYPAL\",\n  \"parrainId\": 2,\n  \"enfantId\": 1,\n  \"datePaiement\": \"2024-10-01\",\n  \"notes\": \"Contribution complémentaire pour Fatou\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/paiements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements"]
+            }
+          }
+        },
+        {
+          "name": "John Johnson pour Ibrahim (60€)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 60.0,\n  \"typePaiement\": \"CARTE_BANCAIRE\",\n  \"parrainId\": 3,\n  \"enfantId\": 2,\n  \"datePaiement\": \"2024-10-01\",\n  \"notes\": \"Paiement mensuel pour Ibrahim\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/paiements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements"]
+            }
+          }
+        },
+        {
+          "name": "Anna Mueller pour Aicha (40€)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 40.0,\n  \"typePaiement\": \"VIREMENT_BANCAIRE\",\n  \"parrainId\": 4,\n  \"enfantId\": 3,\n  \"datePaiement\": \"2024-10-01\",\n  \"notes\": \"Premier paiement pour Aicha\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/paiements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements"]
+            }
+          }
+        },
+        {
+          "name": "Lister Paiements",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/paiements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements"]
+            }
+          }
+        },
+        {
+          "name": "Paiements par sponsor (Pierre)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/paiements/parrain/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements", "parrain", "1"]
+            }
+          }
+        },
+        {
+          "name": "Paiements pour enfant (Fatou)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/paiements/enfant/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements", "enfant", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Confirmations Paiements",
+      "item": [
+        {
+          "name": "Confirmer Paiement 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paiementId\": 1,\n  \"statut\": \"CONFIRME\",\n  \"notes\": \"Paiement confirmé par la banque\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/confirmations-paiement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "confirmations-paiement"]
+            }
+          }
+        },
+        {
+          "name": "Confirmer Paiement 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paiementId\": 2,\n  \"statut\": \"CONFIRME\",\n  \"notes\": \"Paiement PayPal validé\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/confirmations-paiement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "confirmations-paiement"]
+            }
+          }
+        },
+        {
+          "name": "Confirmer Paiement 3",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paiementId\": 3,\n  \"statut\": \"CONFIRME\",\n  \"notes\": \"Carte bancaire acceptée\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/confirmations-paiement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "confirmations-paiement"]
+            }
+          }
+        },
+        {
+          "name": "Confirmer Paiement 4",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paiementId\": 4,\n  \"statut\": \"CONFIRME\",\n  \"notes\": \"Virement bancaire reçu\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/confirmations-paiement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "confirmations-paiement"]
+            }
+          }
+        },
+        {
+          "name": "Lister Confirmations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/confirmations-paiement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "confirmations-paiement"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Dépenses",
+      "item": [
+        {
+          "name": "Matériel scolaire pour Fatou",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 25.0,\n  \"typeDepense\": \"MATERIEL_SCOLAIRE\",\n  \"description\": \"Livres, cahiers et stylos pour Fatou\",\n  \"associationId\": 1,\n  \"dateDepense\": \"2024-10-02\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/depenses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses"]
+            }
+          }
+        },
+        {
+          "name": "Uniforme pour Ibrahim",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 20.0,\n  \"typeDepense\": \"UNIFORME\",\n  \"description\": \"Uniforme scolaire pour Ibrahim\",\n  \"associationId\": 1,\n  \"dateDepense\": \"2024-10-02\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/depenses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses"]
+            }
+          }
+        },
+        {
+          "name": "Fournitures pour Aicha",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"montant\": 18.0,\n  \"typeDepense\": \"MATERIEL_SCOLAIRE\",\n  \"description\": \"Cahiers et crayons pour Aicha\",\n  \"associationId\": 2,\n  \"dateDepense\": \"2024-10-02\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/depenses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses"]
+            }
+          }
+        },
+        {
+          "name": "Lister Dépenses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/depenses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses"]
+            }
+          }
+        },
+        {
+          "name": "Dépenses Association 1",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/depenses/association/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses", "association", "1"]
+            }
+          }
+        },
+        {
+          "name": "Dépenses Association 2",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/depenses/association/2",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses", "association", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Transferts (Optionnel)",
+      "item": [
+        {
+          "name": "Demande de transfert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parrainId\": 1,\n  \"enfantSourceId\": 1,\n  \"enfantDestinationId\": 2,\n  \"montantTransfert\": 30.0,\n  \"motif\": \"Déménagement de la famille\",\n  \"associationId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/demandes-transfert",
+              "host": ["{{base_url}}"],
+              "path": ["api", "demandes-transfert"]
+            }
+          }
+        },
+        {
+          "name": "Réponse du parrain",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"statut\": \"ACCEPTE\",\n  \"messageParrain\": \"J'accepte de transférer le parrainage vers Ibrahim\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/demandes-transfert/1/reponse",
+              "host": ["{{base_url}}"],
+              "path": ["api", "demandes-transfert", "1", "reponse"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Vérifications Finales",
+      "item": [
+        {
+          "name": "Résumé Associations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/associations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "associations"]
+            }
+          }
+        },
+        {
+          "name": "Résumé Parents",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parents"]
+            }
+          }
+        },
+        {
+          "name": "Résumé Sponsors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parrains",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrains"]
+            }
+          }
+        },
+        {
+          "name": "Résumé Enfants",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/enfants",
+              "host": ["{{base_url}}"],
+              "path": ["api", "enfants"]
+            }
+          }
+        },
+        {
+          "name": "Résumé Parrainages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/parrainages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parrainages"]
+            }
+          }
+        },
+        {
+          "name": "Résumé Paiements",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/paiements",
+              "host": ["{{base_url}}"],
+              "path": ["api", "paiements"]
+            }
+          }
+        },
+        {
+          "name": "Résumé Dépenses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/depenses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "depenses"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ]
+}
