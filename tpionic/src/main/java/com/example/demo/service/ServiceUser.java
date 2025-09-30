@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceUser {
     UtilisateurRepository utilisateurRepository;
-    Utilisateur utilisateur;
-    public ServiceUser(UtilisateurRepository utilisateurRepository,Utilisateur utilisateur){
+    public ServiceUser(UtilisateurRepository utilisateurRepository){
         this.utilisateurRepository=utilisateurRepository;
-        this.utilisateur=utilisateur;
     }
     public DtoUtilisateur activerUser(int id){
         Utilisateur user=utilisateurRepository.findById(id).orElseThrow(
@@ -19,7 +17,7 @@ public class ServiceUser {
         );
         user.setActif(true);
         utilisateurRepository.save(user);
-        return utilisateur.dtoUtilisateur(user);
+        return new DtoUtilisateur(user.getEmail(),user.getRole(), user.getActif());
     }
 
     public DtoUtilisateur desactiverUser(int id){
@@ -28,7 +26,7 @@ public class ServiceUser {
         );
         user.setActif(false);
         utilisateurRepository.save(user);
-        return utilisateur.dtoUtilisateur(user);
+        return new DtoUtilisateur(user.getEmail(), user.getRole(), user.getActif());
     }
 
 }
